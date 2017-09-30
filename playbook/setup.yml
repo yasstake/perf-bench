@@ -1,0 +1,56 @@
+- hosts: localhost
+  tasks:
+  - name: "updage ubuntu packages"
+    apt: name={{item}} update_cache=yes cache_valid_time=3600
+    become: True
+    with_items:
+        - libx11-dev
+        - libgl1-mesa-dev
+        - libxext-dev
+        - perl
+        - perl-modules
+        - make
+        - gcc
+        - software-properties-common
+        - openjdk-8-jdk
+        - sysstat
+        - python
+        - python-pip
+        - zip
+        
+  - name: "donwload unix bench"
+    get_url:
+      url: https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/byte-unixbench/UnixBench5.1.3.tgz
+      dest: /tmp/unixbench.tgz
+      
+  - name: "extarct archive"
+    unarchive:
+      src: /tmp/unixbench.tgz
+      dest: /tmp/
+      remote_src: yes
+  - name: "build unix bench"
+    make:
+      chdir: /tmp/UnixBench
+      target: all
+
+  - name: "download ksar"
+    get_url:
+      url: https://github.com/ppalucha/ksar2/releases/download/v0.0.4/kSar2-0.0.4.jar
+      dest: /usr/local/lib/
+
+  - name: "downlaod gperf"
+    get_url:
+      url: https://pypi.python.org/packages/e9/ff/888648351c9fe76bb1be058c65a470f97cd905729c492b530f92835ebf4a/gperf-0.2.tar.gz
+      dest: /tmp/
+  - name: "extract gperf archive"
+    unarchive:
+      src: /tmp/gperf-0.2.tar.gz
+      dest: /tmp
+      remote_src: yes
+  - name: "upgrade pip"
+    shell: pip install --upgrade pip
+  - name: "install matplot lib"
+    pip:
+      name: matplotlib
+      
+      

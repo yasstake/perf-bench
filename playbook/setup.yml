@@ -12,12 +12,46 @@
         - make
         - gcc
         - software-properties-common
-        - openjdk-8-jdk
         - sysstat
         - python
         - python-pip
         - zip
-        
+        - autoconf
+        - dbench
+        - iperf
+        - postgresql
+        - s3cmd
+    when: ansible_distribution == 'Ubuntu'
+
+  - name: "update epel repo"
+    yum: pkg="epel-release"
+    when: ansible_distribution == 'CentOS'
+
+  - name: "updage centOS packages"
+    yum: pkg={{item}}
+    with_items:
+        - "@Development Tools"
+        - libX11-devel
+        - mesa-libGL
+        - libXext-devel
+        - perl
+        - perl-Time-HiRes
+        - make
+        - gcc
+#        - software-properties-common
+        - sysstat
+        - python
+        - python-pip
+        - zip
+        - autoconf
+        - dbench
+        - iperf
+        - postgresql
+        - s3cmd
+    when: ansible_distribution == 'CentOS'
+
+
+# UNIX BENCH https://github.com/kdlucas/byte-unixbench
   - name: "donwload unix bench"
     get_url:
       url: https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/byte-unixbench/UnixBench5.1.3.tgz
@@ -33,24 +67,38 @@
       chdir: /tmp/UnixBench
       target: all
 
-  - name: "download ksar"
-    get_url:
-      url: https://github.com/ppalucha/ksar2/releases/download/v0.0.4/kSar2-0.0.4.jar
-      dest: /usr/local/lib/
+# dbench (using apt) https://dbench.samba.org
 
-  - name: "downlaod gperf"
-    get_url:
-      url: https://pypi.python.org/packages/e9/ff/888648351c9fe76bb1be058c65a470f97cd905729c492b530f92835ebf4a/gperf-0.2.tar.gz
-      dest: /tmp/
-  - name: "extract gperf archive"
-    unarchive:
-      src: /tmp/gperf-0.2.tar.gz
-      dest: /tmp
-      remote_src: yes
-  - name: "upgrade pip"
-    shell: pip install --upgrade pip
-  - name: "install matplot lib"
-    pip:
-      name: matplotlib
+
+# Vdbench from oracle http://www.oracle.com/technetwork/server-storage/vdbench-downloads-1901681.html
+
+
+# Iperf (using apt for iperf 2.0) https://iperf.fr
+
+
+# PGBENCH (using apt for postgresql 9.5) https://www.postgresql.org/docs/devel/static/pgbench.html
+
+
+
+      
+#  - name: "download ksar"
+#    get_url:
+#      url: https://github.com/ppalucha/ksar2/releases/download/v0.0.4/kSar2-0.0.4.jar
+#      dest: /usr/local/lib/
+#
+#  - name: "downlaod gperf"
+#    get_url:
+#      url: https://pypi.python.org/packages/e9/ff/888648351c9fe76bb1be058c65a470f97cd905729c492b530f92835ebf4a/gperf-0.2.tar.gz
+#      dest: /tmp/
+#  - name: "extract gperf archive"
+#    unarchive:
+#      src: /tmp/gperf-0.2.tar.gz
+#      dest: /tmp
+#      remote_src: yes
+#  - name: "upgrade pip"
+#    shell: pip install --upgrade pip
+#  - name: "install matplot lib"
+#    pip:
+#      name: matplotlib
       
       

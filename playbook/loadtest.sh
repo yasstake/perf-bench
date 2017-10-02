@@ -1,7 +1,7 @@
 #!/bin/bash
 export LANG=C
 
-UNIX_BENCH=/tmp/UnixBench/Run
+
 DATE=`date +"%Y-%m-%d-%H%M%S"`
 
 RESULT_DIR=/tmp/$DATE
@@ -10,6 +10,7 @@ TEST_FS_DIR=/tmp
 
 if [ $# -ne 1 ]; then
     echo "please specfy test module"
+    echo "[unixbench | dbench | vdbench | iperf | pgbench]"
     exit 1
 fi
 
@@ -23,7 +24,6 @@ SAR_PID=$!
 
 function stop_sar {
     kill -9 $SAR_PID
-
 }
 trap stop_sar EXIT
 
@@ -33,14 +33,48 @@ trap stop_sar EXIT
 case $1 in
     'unixbench')
 	echo "unix bench"
+#	sleep 10
+	UNIX_BENCH_DIR=/tmp/UnixBench/	
 	export UB_TMPDIR=$TEST_FS_DIR
 	export UB_RESULTDIR=$RESULT_DIR
 
-	$UNIX_BENCH fsbuffer-w
-	#$UNIX_BENCH
+	cd $UNIX_BENCH_DIR
+	./Run fsbuffer-w
+#	sleep 10	
+	;;
+
+    'dbench')
+	#sleep 10
+
+	# do test
+	
+	#sleep 10
+	;;
+
+    'vdbench')
+	#sleep 10
+
+	# do test
+	
+	#sleep 10
+	;;
+
+    'iperf')
+	#sleep 10
+
+	# do test
+	
+	#sleep 10
+	;;
+
+    'pgbench')
+	#sleep 10
+
+	# do test
+	
+	#sleep 10
 	;;
 esac
-
 
 
 #---- archive log --
